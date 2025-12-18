@@ -15,7 +15,7 @@ app.use("/api/products", productRoutes);
 
 // User routes
 const userRoutes = require("./routes/userRoutes");
-app.use("/api", userRoutes);
+app.use("/api/users", userRoutes);
 
 // Test route
 app.get("/", (req, res) => {
