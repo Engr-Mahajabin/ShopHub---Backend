@@ -26,12 +26,11 @@ app.use("/api/products", productRoutes);
 
 // User routes
 const userRoutes = require("./routes/userRoutes");
-// app.use("/api/users", userRoutes);
 app.use("/api/users", userRoutes);
 
 // Admin routes:
 const authRoutes = require("./routes/authRoutes");
-app.use("/api/admin", authRoutes);
+app.use("/api", authRoutes);
 
 // Test route
 app.get("/", (req, res) => {
