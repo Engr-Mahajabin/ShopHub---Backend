@@ -1,6 +1,6 @@
 const adminModel = require("../models/adminModel");
 const { createToken } = require("../utils/jwtToken");
-const { responseReture } = require("../utils/response");
+const { responseReturn } = require("../utils/response");
 const bcrypt = require("bcryptjs");
 
 class authController {
@@ -30,22 +30,39 @@ class authController {
         const passwordMatch = await bcrypt.compare(password, admin.password);
         if (passwordMatch) {
           const token = await createToken({
-            id: admin._id,
+            id: admin.id,
             role: admin.role,
           });
           res.cookie("access_token", token, {
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
           });
-          responseReture(res, 200, {
-            //  token,
+          responseReturn(res, 200, {
+            token,
             message: "Admin Login Successfully",
           });
         } else {
-          responseReture(res, 404, { error: "Wrong password" });
+          responseReturn(res, 404, { error: "Wrong password" });
         }
+      } else {
+        responseReturn(res, 404, { error: "Wrong email" });
       }
     } catch (error) {
-      responseReture(res, 500, { error: error.message });
+      responseReturn(res, 500, { error: error.message });
+    }
+  };
+
+  // Get User:
+  getUser = async (req, res) => {
+    const { id, role } = req;
+    try {
+      if (role === "admin") {
+        const user = await adminModel.findById(id);
+        responseReturn(res, 200, { userInfo: user });
+      } else {
+        console.log("Seller info");
+      }
+    } catch (error) {
+      console.log(error.message);
     }
   };
 }
