@@ -39,6 +39,12 @@ class authController {
           responseReturn(res, 200, {
             token,
             message: "Admin Login Successfully",
+            admin: {
+              id: admin._id,
+              name: admin.name,
+              email: admin.email,
+              role: admin.role,
+            },
           });
         } else {
           responseReturn(res, 404, { error: "Wrong password" });
